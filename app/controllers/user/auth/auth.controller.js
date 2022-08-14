@@ -2,6 +2,8 @@ const createError = require("http-errors");
 const {
   generateRandomNuber,
   SignAccesToken,
+  VerifyRefreshToken,
+  SignRefreshToken,
 } = require("../../../utils/functions");
 const { UserModel } = require("../../../models/users");
 const { EXPIRES_IN, USER_ROLE } = require("../../../utils/constans");
@@ -76,9 +78,29 @@ class UserAuthController extends Controller {
       if (+user.otp.expiresIn < now)
         throw createError.NotFound("کد شما منقضی شده است!");
       const accesToken = await SignAccesToken(user._id);
+      const refreshToken = await SignRefreshToken(user._id);
       return res.send({
         data: {
           accesToken,
+          refreshToken,
+        },
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async refreshToken(req, res, next) {
+    try {
+      const { refreshToken } = req.body;
+      const mobile = await VerifyRefreshToken(refreshToken);
+      const user = await UserModel.findOne(mobile);
+      const accessToken = await SignAccesToken(user._id);
+      const newRefreshToken = await SignRefreshToken(user._id);
+      return res.json({
+        data: {
+          accessToken,
+          refrechToken: newRefreshToken,
         },
       });
     } catch (error) {

@@ -7,7 +7,7 @@ const { AllRoutes } = require("./routers/router");
 const morgan = require("morgan");
 const swaggerUI = require("swagger-ui-express");
 const swaggerJsDoc = require("swagger-jsdoc");
-
+const cors = require("cors");
 const app = express();
 
 class Application {
@@ -20,6 +20,7 @@ class Application {
   }
 
   configAplication() {
+    app.use(cors());
     app.use(morgan("dev"));
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));

@@ -1,5 +1,6 @@
 const express = require("express");
 const HomeController = require("../../controllers/api/home.controller");
+const VerifyToken = require("../../middlewares/verifyToken");
 const router = express.Router();
 /**
  * @swagger
@@ -14,6 +15,10 @@ const router = express.Router();
  *  get:
  *    summary : index of routes
  *    description : index page
+ *    parameters:
+ *    -         in: header
+ *              name: authorization
+ *              example: Bearer Yor token
  *    tags: [indexpage]
  *    responses:
  *         200:
@@ -21,7 +26,7 @@ const router = express.Router();
  *         404:
  *              description : not found
  */
-router.get("/", HomeController.indexPage);
+router.get("/", VerifyToken, HomeController.indexPage);
 module.exports = {
   HomeRoutes: router,
 };

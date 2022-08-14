@@ -1,39 +1,36 @@
+const createErorr = require("http-errors");
 const jwt = require("jsonwebtoken");
-function VerifyToken(req, res, next) {
+const { UserModel } = require("../models/users");
+async function VerifyToken(req, res, next) {
   const authorization = req.headers.authorization;
-  if (!authorization) {
-    return res.status(401).json({
-      message: "No Authorization Header",
-    });
-  }
+  if (!authorization) throw createErorr.Unauthorized("No Authorization Header");
   try {
     const token = authorization.split("Bearer ")[1];
-    if (!token) {
-      return res.status(401).json({
-        message: "Invalid Token Format",
-      });
-    }
-    const verify = jwt.verify(token, SECRET_KEY);
-    req.user = verify;
+    if (!token)
+      throw createErorr.Unauthorized("لطفا وارد حساب کاربری خود شوید.");
+
+    jwt.verify(
+      token,
+      process.env.ACCES_TOKEN_SECRET_KEY,
+      async (error, payload) => {
+        console.log(token);
+
+        if (error)
+          throw createErorr.Unauthorized("لطفا وارد حساب کاربری خود شوید.");
+        const { mobile } = payload || {};
+        const user = await UserModel.findOne(
+          { mobile },
+          { password: 0 },
+          { otp: 0 }
+        );
+        if (!user) throw createErorr.Unauthorized("حساب کاربری یافت نشد");
+        req.user = user;
+        console.log(req.user);
+      }
+    );
     next();
   } catch (error) {
-    if (error instanceof jwt.TokenExpiredError) {
-      return res.status(401).json({
-        message: "Session Expired",
-        error: error.message,
-      });
-    }
-    if (error instanceof jwt.JsonWebTokenError || error instanceof TokenError) {
-      return res.status(401).json({
-        message: "Invalid Token",
-        error: error.message,
-      });
-    }
-    res.status(500).json({
-      message: "Internal server Error",
-      error: error.message,
-      stack: error.stack,
-    });
+    next(error);
   }
 }
 

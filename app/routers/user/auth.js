@@ -1,5 +1,6 @@
 const express = require("express");
 const authController = require("../../controllers/user/auth/auth.controller");
+const VerifyToken = require("../../middlewares/verifyToken");
 const router = express.Router();
 
 /**
@@ -67,6 +68,23 @@ router.post("/get-otp", authController.getOtp);
  */
 router.post("/chek-otp", authController.chekOtp);
 
+/**
+ * @swagger
+ *  /user/refresh-token:
+ *        post:
+ *            summary: send refresh token
+ *            tags: [User Authentication]
+ *            description: refresh token
+ *            parameters:
+ *            -         in: rormData
+ *                      type: string
+ *                      required: true
+ *                      name: refreshtoken
+ *            responses:
+ *                     200:
+ *                        description: success
+ */
+router.post("/refresh-token", authController.refreshToken);
 module.exports = {
   UserAuthRoutes: router,
 };
