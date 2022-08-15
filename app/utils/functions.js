@@ -1,6 +1,8 @@
 const jwt = require("jsonwebtoken");
 const { UserModel } = require("../models/users");
 const createError = require("http-errors");
+const redisClient = require("./redis_init");
+// const packageName = require('packageName');
 function generateRandomNuber() {
   return Math.floor(Math.random() * 90000 + 10000);
 }
@@ -29,6 +31,7 @@ async function SignRefreshToken(userId) {
     process.env.REFRESH_TOKEN_SECRET_KEY,
     options
   );
+  redisClient.SETEX(userId, 365 * 24 * 60 * 60, token);
   return token;
 }
 
@@ -48,9 +51,9 @@ function VerifyRefreshToken(token) {
           { otp: 0 }
         );
         if (!user) return createError.Unauthorized("حساب کاربری یافت نشد");
-        console.log(mobile);
-
-        return mobile;
+        const refreshtoken = await redisClient.get(user._id);
+        if (token === refreshtoken) return mobile;
+        return createError.Unauthorized("ورود مجدد به حساب کاربری انجام نشد.");
       }
     );
   } catch (error) {

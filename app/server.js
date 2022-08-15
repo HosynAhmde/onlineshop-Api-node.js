@@ -17,6 +17,7 @@ class Application {
     this.configAplication();
     this.createRoutes();
     this.errorHandler();
+    this.initRedis();
   }
 
   configAplication() {
@@ -72,6 +73,10 @@ class Application {
   }
   createRoutes() {
     app.use(AllRoutes);
+  }
+
+  initRedis() {
+    require("../app/utils/redis_init");
   }
   errorHandler() {
     app.use((req, res, next) => {
