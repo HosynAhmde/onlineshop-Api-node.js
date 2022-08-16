@@ -2,6 +2,8 @@ const jwt = require("jsonwebtoken");
 const { UserModel } = require("../models/users");
 const createError = require("http-errors");
 const redisClient = require("./redis_init");
+const { json } = require("express");
+const { refreshToken } = require("../controllers/user/auth/auth.controller");
 // const packageName = require('packageName');
 function generateRandomNuber() {
   return Math.floor(Math.random() * 90000 + 10000);
@@ -31,33 +33,34 @@ async function SignRefreshToken(userId) {
     process.env.REFRESH_TOKEN_SECRET_KEY,
     options
   );
-  redisClient.SETEX(userId, 365 * 24 * 60 * 60, token);
+  const userid = JSON.stringify(userId);
+  redisClient.SETEX(userid, 365 * 24 * 60 * 60, token);
   return token;
 }
 
-function VerifyRefreshToken(token) {
+async function VerifyRefreshToken(token) {
   try {
     jwt.verify(
       token,
       process.env.REFRESH_TOKEN_SECRET_KEY,
       async (error, payload) => {
-        if (error) return createError.Unauthorized("حساب کاربری یافت نشد");
-        console.log(payload);
+        // if (error) return createError.Unauthorized("حساب کاربری یافت نشد");
 
         const { mobile } = payload || {};
+
         const user = await UserModel.findOne(
           { mobile },
-          { password: 0 },
-          { otp: 0 }
+          { password: 0, otp: 0 }
         );
         if (!user) return createError.Unauthorized("حساب کاربری یافت نشد");
-        const refreshtoken = await redisClient.get(user._id);
+        const refreshtoken = await redisClient.get(JSON.stringify(user._id));
+        console.log(refreshtoken);
         if (token === refreshtoken) return mobile;
         return createError.Unauthorized("ورود مجدد به حساب کاربری انجام نشد.");
       }
     );
   } catch (error) {
-    next(error);
+    console.log(error);
   }
 }
 module.exports = {

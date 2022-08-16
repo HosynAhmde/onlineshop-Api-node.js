@@ -6,7 +6,7 @@ const {
   SignRefreshToken,
 } = require("../../../utils/functions");
 const { UserModel } = require("../../../models/users");
-const { EXPIRES_IN, USER_ROLE } = require("../../../utils/constans");
+const { ROLE } = require("../../../utils/constans");
 const Controller = require("../../controller");
 const {
   getOtpSchema,
@@ -47,7 +47,7 @@ class UserAuthController extends Controller {
     return !!(await UserModel.create({
       mobile,
       otp,
-      Roles: [USER_ROLE],
+      Roles: [ROLE.USER],
     }));
   }
 
@@ -93,10 +93,13 @@ class UserAuthController extends Controller {
   async refreshToken(req, res, next) {
     try {
       const { refreshToken } = req.body;
+
       const mobile = await VerifyRefreshToken(refreshToken);
+      console.log(mobile);
       const user = await UserModel.findOne(mobile);
       const accessToken = await SignAccesToken(user._id);
       const newRefreshToken = await SignRefreshToken(user._id);
+
       return res.json({
         data: {
           accessToken,

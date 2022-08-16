@@ -76,7 +76,7 @@ class Application {
   }
 
   initRedis() {
-    require("../app/utils/redis_init");
+    require("./utils/redis_init");
   }
   errorHandler() {
     app.use((req, res, next) => {
