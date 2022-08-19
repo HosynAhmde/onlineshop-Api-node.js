@@ -2,9 +2,6 @@ const jwt = require("jsonwebtoken");
 const { UserModel } = require("../models/users");
 const createError = require("http-errors");
 const redisClient = require("./redis_init");
-const { json } = require("express");
-const { refreshToken } = require("../controllers/user/auth/auth.controller");
-// const packageName = require('packageName');
 function generateRandomNuber() {
   return Math.floor(Math.random() * 90000 + 10000);
 }
