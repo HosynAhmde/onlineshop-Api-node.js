@@ -2,6 +2,8 @@ const jwt = require("jsonwebtoken");
 const { UserModel } = require("../models/users");
 const createError = require("http-errors");
 const redisClient = require("./redis_init");
+const fs = require("fs");
+const path = require("path");
 function generateRandomNuber() {
   return Math.floor(Math.random() * 90000 + 10000);
 }
@@ -60,9 +62,15 @@ async function VerifyRefreshToken(token) {
     console.log(error);
   }
 }
+
+function deleteFile(fileAddress) {
+  const filePath = path.join(__dirname, "..", "..", "public", fileAddress);
+  fs.unlinkSync(filePath);
+}
 module.exports = {
   generateRandomNuber,
   SignAccesToken,
   SignRefreshToken,
   VerifyRefreshToken,
+  deleteFile,
 };

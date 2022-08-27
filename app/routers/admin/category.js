@@ -8,7 +8,7 @@ const router = require("express").Router();
  * @swagger
  *  /admin/category/add:
  *      post:
- *          tags: [Admin-Panel]
+ *          tags: [Category(AdminPanel)]
  *          summary: Create new category
  *          parameters:
  *          -          in: formData
@@ -30,7 +30,7 @@ router.post("/add", CategoryController.addCategory);
  * @swagger
  *  /admin/category/parents:
  *      get:
- *          tags: [Admin-Panel]
+ *          tags: [Category(AdminPanel)]
  *          summary: Get All Parents Of Category
  *
  *          responses:
@@ -43,7 +43,7 @@ router.get("/parents", CategoryController.getAllCategoryParents);
  * @swagger
  *  /admin/category/all:
  *      get:
- *          tags: [Admin-Panel]
+ *          tags: [Category(AdminPanel)]
  *          summary: Get All  Category
  *
  *          responses:
@@ -56,7 +56,7 @@ router.get("/all", CategoryController.getAllCategory);
  * @swagger
  *  /admin/category/{id}:
  *      get:
- *          tags: [Admin-Panel]
+ *          tags: [Category(AdminPanel)]
  *          summary: Find category by id
  *          parameters:
  *          -          in: path
@@ -71,9 +71,32 @@ router.get("/:id", CategoryController.getCategoryById);
 
 /**
  * @swagger
+ *  /admin/category/update/{id}:
+ *      patch:
+ *          tags: [Category(AdminPanel)]
+ *          summary: update category title
+ *          parameters:
+ *          -          in: path
+ *                     name: id
+ *                     type: string
+ *                     required: true
+ *          -          in: formData
+ *                     name: title
+ *                     required: true
+ *                     type: string
+ *          responses:
+ *                   200:
+ *                      description: succes
+ *                   500:
+ *                      description: internal server
+ */
+router.patch("/update/:id", CategoryController.editCategory);
+
+/**
+ * @swagger
  *  /admin/category/child-of-parent/{parent}:
  *      get:
- *          tags: [Admin-Panel]
+ *          tags: [Category(AdminPanel)]
  *          summary: Get All child of parent
  *          parameters:
  *          -          in: path
@@ -90,7 +113,7 @@ router.get("/child-of-parent/:parent", CategoryController.getChildOfParents);
  * @swagger
  *  /admin/category/remove/{id}:
  *      delete:
- *          tags: [Admin-Panel]
+ *          tags: [Category(AdminPanel)]
  *          summary: Delete category
  *          parameters:
  *          -          in: path

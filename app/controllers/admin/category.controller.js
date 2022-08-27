@@ -1,6 +1,9 @@
 const createError = require("http-errors");
 const { CategoryModel } = require("../../models/categories");
-const addCategorySchema = require("../../validators/admin/category.schema");
+const {
+  addCategorySchema,
+  editCategorySchema,
+} = require("../../validators/admin/category.schema");
 const Controller = require("../controller");
 const mongoose = require("mongoose");
 class CategoryController extends Controller {
@@ -21,7 +24,9 @@ class CategoryController extends Controller {
           message: "دسته بندی با موفقیت اضافه شد.",
         },
       });
-    } catch (error) {}
+    } catch (error) {
+      next(error);
+    }
   }
 
   async removeCategory(req, res, next) {
@@ -51,9 +56,27 @@ class CategoryController extends Controller {
     }
   }
 
-  editCategory(req, res, next) {
+  async editCategory(req, res, next) {
     try {
-    } catch (error) {}
+      const { id } = req.params;
+      const { title } = req.body;
+      const category = await this.checkExistCategory(id);
+      await editCategorySchema.validateAsync(req.body);
+      const update = await CategoryModel.updateOne(
+        { _id: id },
+        { $set: { title } }
+      );
+      if (update.modifiedCount == 0)
+        throw createError.InternalServerError("بروزرسانی انجام نشد");
+      return res.status(200).json({
+        data: {
+          statusCode: 200,
+          message: "برروز رسانی با موفقیت انجام شد.",
+        },
+      });
+    } catch (error) {
+      next(error);
+    }
   }
   async getAllCategoryParents(req, res, next) {
     try {
@@ -67,7 +90,9 @@ class CategoryController extends Controller {
           parents,
         },
       });
-    } catch (error) {}
+    } catch (error) {
+      next(error);
+    }
   }
   async getChildOfParents(req, res, next) {
     try {
@@ -124,7 +149,9 @@ class CategoryController extends Controller {
           categories,
         },
       });
-    } catch (error) {}
+    } catch (error) {
+      next(error);
+    }
   }
   async getCategoryById(req, res, next) {
     try {
@@ -157,7 +184,9 @@ class CategoryController extends Controller {
           category,
         },
       });
-    } catch (error) {}
+    } catch (error) {
+      next(error);
+    }
   }
 }
 module.exports = { CategoryController: new CategoryController() };
