@@ -43,6 +43,11 @@ function fileFilter(req, file, cb) {
   }
   return cb(createError.BadRequest("فرمت ارسال شده صحیح نمیباشد"));
 }
-const uplodFile = multer({ storage, fileFilter });
+const maxSize = 2 * 1000 * 1000;
+const uplodFile = multer({
+  storage,
+  fileFilter,
+  limits: { fieldSize: maxSize },
+});
 
 module.exports = { uplodFile };

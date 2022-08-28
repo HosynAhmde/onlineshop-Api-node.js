@@ -3,29 +3,40 @@ const Controller = require("../controller");
 const { BlogModel } = require("../../models/blogs");
 const path = require("path");
 const { deleteFile } = require("../../utils/functions");
+const createError = require("http-errors");
 class BlogController extends Controller {
+  async findBlog(query = {}) {
+    const blog = await BlogModel.findOne(query).populate([
+      { path: "category", select: ["title", "first_name", "username"] },
+      { path: "author", select: ["mobile"] },
+    ]);
+    if (!blog) return createError.NotFound("مقاله ای یافت نشد");
+    return blog;
+  }
   async createBlog(req, res, next) {
     try {
       const blogDataBody = await blogSchema.validateAsync(req.body);
       req.body.image = path
         .join(blogDataBody.fileuploudpath, blogDataBody.filename)
-        .replace(/\\/gi, "/");
-      const { title, short_text, category, tags } = blogDataBody;
-      const { image } = req.body.image;
+        .replace(/\\/g, "/");
+      const image = req.body.image;
+      const author = req.user._id;
+      const { title, short_text, category, tags, text } = blogDataBody;
+      console.log(image);
       const blog = await BlogModel.create({
         title,
+        text,
+        image,
         short_text,
         category,
         tags,
-        image,
+        author,
       });
-      return res.status(200).json({
-        // statusCode: 200,
-
-        // data: {
-        //   blogDataBody,
-        // },
-        blog,
+      return res.status(201).json({
+        data: {
+          statusCode: 200,
+          message: "ایجاد بلاگ با موفقیت انجام شد",
+        },
       });
     } catch (error) {
       deleteFile(req.body.image);
@@ -35,6 +46,14 @@ class BlogController extends Controller {
 
   async getOneBlogById(req, res, next) {
     try {
+      const { id } = req.params;
+      const blog = await this.findBlog({ _id: id });
+      return res.status(200).json({
+        data: {
+          statusCode: 200,
+          blog,
+        },
+      });
     } catch (error) {
       next(error);
     }
@@ -42,10 +61,50 @@ class BlogController extends Controller {
 
   async getListOfBlog(req, res, next) {
     try {
+      const blog = await BlogModel.aggregate([
+        { $match: {} },
+        {
+          $lookup: {
+            from: "users",
+            foreignField: "_id",
+            localField: "author",
+            as: "author",
+          },
+        },
+        {
+          $unwind: "$author",
+        },
+        {
+          $project: {
+            "author.Roles": 0,
+            "author.bills": 0,
+            "author.otp": 0,
+            "author.discount_code": 0,
+            "author.__v": 0,
+          },
+        },
+        // ----------------------------category--------------------------------------
+        {
+          $lookup: {
+            from: "categories",
+            foreignField: "_id",
+            localField: "category",
+            as: "category",
+          },
+        },
+        {
+          $unwind: "$category",
+        },
+        {
+          $project: {
+            "category.__v": 0,
+          },
+        },
+      ]);
       return res.status(200).json({
-        statusCode: 200,
         data: {
-          blog: [],
+          statusCode: 200,
+          blog,
         },
       });
     } catch (error) {
@@ -61,6 +120,18 @@ class BlogController extends Controller {
   }
   async deleteBlog(req, res, next) {
     try {
+      const { id } = req.params;
+
+      await this.findBlog({ _id: id });
+      const deleteBlog = await BlogModel.deleteOne({ id });
+      if (deleteBlog.deletedCount == 0)
+        throw createError.InternalServerError("حذف انجام نشد");
+      return res.status(200).json({
+        data: {
+          statusCode: 200,
+          message: "حذف بلاگ با موفقیت انجام شد",
+        },
+      });
     } catch (error) {
       next(error);
     }
