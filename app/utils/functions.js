@@ -64,8 +64,10 @@ async function VerifyRefreshToken(token) {
 }
 
 function deleteFile(fileAddress) {
-  const filePath = path.join(__dirname, "..", "..", "public", fileAddress);
-  fs.unlinkSync(filePath);
+  if (fileAddress) {
+    const filePath = path.join(__dirname, "..", "..", "public", fileAddress);
+    fs.unlinkSync(filePath);
+  }
 }
 module.exports = {
   generateRandomNuber,

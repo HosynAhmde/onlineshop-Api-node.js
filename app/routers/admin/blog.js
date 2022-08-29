@@ -94,6 +94,54 @@ router.get("/:id", BlogController.getOneBlogById);
 
 /**
  * @swagger
+ *    /admin/blog/update/{id}:
+ *          patch:
+ *              tags: [Blog(AdminPanel)]
+ *              summary: Update blog document
+ *              consumes:
+ *                       - multipart/form-data
+ *              parameters :
+ *              -          name: Authorization
+ *                         type: string
+ *                         in: header
+ *                         example: bearer token
+ *                         value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIwOTEwMDA4NDAyMSIsImlhdCI6MTY2MTY2MDc1MywiZXhwIjoxNjYyNTI0NzUzfQ.Tp118EEqtGVkFne7s7fxbJP3TqHOzxCg77boSIS7Yko
+ *              -          name: id
+ *                         in: path
+ *                         type: string
+ *              -          name: title
+ *                         in: formData
+ *                         type: string
+ *              -          name: text
+ *                         in: formData
+ *                         type: string
+ *              -          name: short_text
+ *                         in: formData
+ *                         type: string
+ *              -          name: tags
+ *                         example: tag1#tag2#tag3_foo#
+ *                         in: formData
+ *                         type: string
+ *              -          name: category
+ *                         in: formData
+ *                         type: string
+ *              -          name: image
+ *                         in: formData
+ *
+ *                         type: file
+ *              responses:
+ *                       201:
+ *                          description: succes
+ */
+router.patch(
+  "/update/:id",
+  uplodFile.single("image"),
+  stringToArray("tags"),
+  BlogController.updateBlog
+);
+
+/**
+ * @swagger
  *    /admin/blog/{id}:
  *           delete:
  *              tags: [Blog(AdminPanel)]
