@@ -1,6 +1,6 @@
 const express = require("express");
 const HomeController = require("../../controllers/api/home.controller");
-const VerifyToken = require("../../middlewares/verifyToken");
+const { VerifyToken } = require("../../middlewares/verifyToken");
 const router = express.Router();
 /**
  * @swagger

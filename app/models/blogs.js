@@ -1,10 +1,6 @@
 const { default: mongoose } = require("mongoose");
-const CommentSchema = new mongoose.Schema({
-  user: { type: mongoose.Types.ObjectId, ref: "User", required: true },
-  commnet: { type: String, required: true },
-  createdAd: { type: Date, default: new Date().getTime() },
-  parent: { type: mongoose.Types.ObjectId },
-});
+const { CommentSchema } = require("./public.schema");
+
 const blogSchema = new mongoose.Schema(
   {
     author: { type: mongoose.Types.ObjectId, ref: "User", required: true },

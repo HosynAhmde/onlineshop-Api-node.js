@@ -11,6 +11,11 @@ const router = require("express").Router();
  *          tags: [Category(AdminPanel)]
  *          summary: Create new category
  *          parameters:
+ *          -          name: Authorization
+ *                     type: string
+ *                     in: header
+ *                     example: bearer token
+ *                     value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIwOTEwMDA4NDAyMSIsImlhdCI6MTY2MTY2MDc1MywiZXhwIjoxNjYyNTI0NzUzfQ.Tp118EEqtGVkFne7s7fxbJP3TqHOzxCg77boSIS7Yko
  *          -          in: formData
  *                     type: string
  *                     required: true
@@ -32,7 +37,12 @@ router.post("/add", CategoryController.addCategory);
  *      get:
  *          tags: [Category(AdminPanel)]
  *          summary: Get All Parents Of Category
- *
+ *          parameters :
+ *          -          name: Authorization
+ *                     type: string
+ *                     in: header
+ *                     example: bearer token
+ *                     value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIwOTEwMDA4NDAyMSIsImlhdCI6MTY2MTY2MDc1MywiZXhwIjoxNjYyNTI0NzUzfQ.Tp118EEqtGVkFne7s7fxbJP3TqHOzxCg77boSIS7Yko
  *          responses:
  *                   200:
  *                      description: succes
@@ -45,7 +55,12 @@ router.get("/parents", CategoryController.getAllCategoryParents);
  *      get:
  *          tags: [Category(AdminPanel)]
  *          summary: Get All  Category
- *
+ *          parameters :
+ *          -          name: Authorization
+ *                     type: string
+ *                     in: header
+ *                     example: bearer token
+ *                     value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIwOTEwMDA4NDAyMSIsImlhdCI6MTY2MTY2MDc1MywiZXhwIjoxNjYyNTI0NzUzfQ.Tp118EEqtGVkFne7s7fxbJP3TqHOzxCg77boSIS7Yko
  *          responses:
  *                   200:
  *                      description: succes
@@ -59,6 +74,11 @@ router.get("/all", CategoryController.getAllCategory);
  *          tags: [Category(AdminPanel)]
  *          summary: Find category by id
  *          parameters:
+ *          -          name: Authorization
+ *                     type: string
+ *                     in: header
+ *                     example: bearer token
+ *                     value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIwOTEwMDA4NDAyMSIsImlhdCI6MTY2MTY2MDc1MywiZXhwIjoxNjYyNTI0NzUzfQ.Tp118EEqtGVkFne7s7fxbJP3TqHOzxCg77boSIS7Yko
  *          -          in: path
  *                     name: id
  *                     type: string
@@ -76,6 +96,11 @@ router.get("/:id", CategoryController.getCategoryById);
  *          tags: [Category(AdminPanel)]
  *          summary: update category title
  *          parameters:
+ *          -          name: Authorization
+ *                     type: string
+ *                     in: header
+ *                     example: bearer token
+ *                     value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIwOTEwMDA4NDAyMSIsImlhdCI6MTY2MTY2MDc1MywiZXhwIjoxNjYyNTI0NzUzfQ.Tp118EEqtGVkFne7s7fxbJP3TqHOzxCg77boSIS7Yko
  *          -          in: path
  *                     name: id
  *                     type: string
@@ -99,6 +124,11 @@ router.patch("/update/:id", CategoryController.editCategory);
  *          tags: [Category(AdminPanel)]
  *          summary: Get All child of parent
  *          parameters:
+ *          -          name: Authorization
+ *                     type: string
+ *                     in: header
+ *                     example: bearer token
+ *                     value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIwOTEwMDA4NDAyMSIsImlhdCI6MTY2MTY2MDc1MywiZXhwIjoxNjYyNTI0NzUzfQ.Tp118EEqtGVkFne7s7fxbJP3TqHOzxCg77boSIS7Yko
  *          -          in: path
  *                     name: parent
  *                     type: string
@@ -116,6 +146,11 @@ router.get("/child-of-parent/:parent", CategoryController.getChildOfParents);
  *          tags: [Category(AdminPanel)]
  *          summary: Delete category
  *          parameters:
+ *          -          name: Authorization
+ *                     type: string
+ *                     in: header
+ *                     example: bearer token
+ *                     value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIwOTEwMDA4NDAyMSIsImlhdCI6MTY2MTY2MDc1MywiZXhwIjoxNjYyNTI0NzUzfQ.Tp118EEqtGVkFne7s7fxbJP3TqHOzxCg77boSIS7Yko
  *          -          in: path
  *                     name: id
  *                     type: string

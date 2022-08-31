@@ -18,5 +18,6 @@ const userSchema = new mongoose.Schema({
   discount_code: { type: Number, default: 0 },
   birthday: { type: String },
   Roles: { type: [String], default: ["USER"] },
+  courses: { type: [mongoose.Types.ObjectId], default: [], ref: "Course" },
 });
 module.exports = { UserModel: mongoose.model("User", userSchema) };
