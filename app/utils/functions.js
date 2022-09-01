@@ -69,10 +69,20 @@ function deleteFile(fileAddress) {
     fs.unlinkSync(filePath);
   }
 }
+function listOfImages(files, fileuploudpath) {
+  if (files.length > 0) {
+    return files
+      .map((file) => path.join(fileuploudpath, file.filename))
+      .map((item) => item.replace(/\\/g, "/"));
+  } else {
+    return [];
+  }
+}
 module.exports = {
   generateRandomNuber,
   SignAccesToken,
   SignRefreshToken,
   VerifyRefreshToken,
   deleteFile,
+  listOfImages,
 };

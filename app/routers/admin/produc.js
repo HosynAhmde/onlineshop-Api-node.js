@@ -72,7 +72,11 @@ const router = require("express").Router();
  *                          description: succes
  */
 
-router.post("/create", uplodFile.single("image"), ProductController.addProduct);
+router.post(
+  "/create",
+  uplodFile.array("image", 10),
+  ProductController.addProduct
+);
 
 /**
  * @swagger

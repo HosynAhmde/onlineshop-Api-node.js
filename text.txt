@@ -1,6 +1,0 @@
-{
-  "data": {
-    "accesToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIwOTEwMDA4NDAyMSIsImlhdCI6MTY2MTg1NTE0MCwiZXhwIjoxNjYyNzE5MTQwfQ.S1x00of_MzlZOwDNCDRmxWBQ4KiEAhestoOQV1GM9bs",
-    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIwOTEwMDA4NDAyMSIsImlhdCI6MTY2MTg1NTE0MCwiZXhwIjoxNjkzNDEyNzQwfQ.FBxODU2GDgSZcbjPerE7kx363Z-5HLdyXTFY2xXy3kU"
-  }
-}
