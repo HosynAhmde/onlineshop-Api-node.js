@@ -7,6 +7,7 @@ const {
 const Controller = require("../controller");
 const mongoose = require("mongoose");
 class CategoryController extends Controller {
+  
   async checkExistCategory(id) {
     const category = await CategoryModel.find({ id });
     if (!category) throw createError.NotFound("دسته بندی وجود ندارد");

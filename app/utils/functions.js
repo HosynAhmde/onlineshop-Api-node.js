@@ -13,7 +13,7 @@ async function SignAccesToken(userId) {
     mobile: user.mobile,
   };
   options = {
-    expiresIn: "10d",
+    expiresIn: "100d",
   };
   const token = jwt.sign(payload, process.env.ACCES_TOKEN_SECRET_KEY, options);
   return token;

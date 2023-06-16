@@ -15,7 +15,7 @@ const router = require("express").Router();
  *                     type: string
  *                     in: header
  *                     example: bearer token
- *                     value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIwOTEwMDA4NDAyMSIsImlhdCI6MTY2MTY2MDc1MywiZXhwIjoxNjYyNTI0NzUzfQ.Tp118EEqtGVkFne7s7fxbJP3TqHOzxCg77boSIS7Yko
+ *                     value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIwOTEwMDA4NDAyMSIsImlhdCI6MTY4MDcxNTc1NSwiZXhwIjoxNjg5MzU1NzU1fQ.MbIAvOZs_QH5ET7MD3f6AbcuyOq6uX4liR5gAWGEog0
  *          -          in: formData
  *                     type: string
  *                     required: true
